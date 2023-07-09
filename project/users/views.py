@@ -9,7 +9,7 @@ from fastapi.templating import Jinja2Templates
 
 from . import users_router
 from .schemas import UserBody
-from .tasks import sample_task
+from .tasks import sample_task, task_process_notification
 
 logger = logging.getLogger(__name__)
 templates = Jinja2Templates(directory="project/users/templates")
@@ -59,3 +59,20 @@ def webhook_test():
 
     requests.post("https://httpbin.org/delay/5")
     return "pong"
+
+
+@users_router.post("/webhook_test_async/")
+def webhook_test_async():
+    task = task_process_notification.delay()
+    print(task.id)
+    return "pong"
+
+
+@users_router.get("/form_ws/")
+def form_ws_example(request: Request):
+    return templates.TemplateResponse("form_ws.html", {"request": request})
+
+
+@users_router.get("/form_socketio")
+def form_socketio_example(request: Request):
+    return templates.TemplateResponse("form_socketio.html", {"request": request})

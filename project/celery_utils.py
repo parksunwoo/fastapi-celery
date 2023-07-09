@@ -1,4 +1,5 @@
 from celery import current_app as current_celery_app
+from celery.result import AsyncResult
 
 from project.config import settings
 
@@ -10,3 +11,13 @@ def create_celery():
     return celery_app
 
 
+def get_task_info(task_id):
+    task = AsyncResult(task_id)
+    state = task.state
+
+    if state == "FAILURE":
+        error = str(task.result)
+        response = {"state": state, "error": error}
+    else:
+        response = {"state": state}
+    return response
