@@ -38,7 +38,7 @@ class MemberFactory(factory.alchemy.SQLAlchemyModelFactory):
         return filename
 
 
-def test_model(db_session, memeber):
+def test_model(db_session, member):
     member = MemberFactory.build()
 
     db_session.add(member)

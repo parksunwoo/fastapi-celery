@@ -7,6 +7,7 @@ from celery.signals import task_postrun
 from celery.utils.log import get_task_logger
 
 from project.database import db_context
+from project.celery_utils import custom_celery_task
 
 
 logger = get_task_logger(__name__)
@@ -119,6 +120,11 @@ def task_add_subscribe(self, user_pk):
             raise self.retry(exc=exc)
 
 
+@custom_celery_task(max_retries=3)
+def task_process_notification():
+    if not random.choice([0, 1]):
+        raise Exception()
 
+    requests.post("https://httpbin.org/delay/5")
 
 
