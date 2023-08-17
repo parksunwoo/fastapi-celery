@@ -51,6 +51,12 @@ class BaseConfig:
     CELERY_TASK_ROUTES = (route_task,)
     UPLOADS_DEFAULT_DEST: str = str(BASE_DIR / "upload")
 
+    CELERY_WORKER_PREFETCH_MULTIPLIER = 1
+    CELERY_TASK_ACKS_LATE = True
+    CELERY_TASK_SOFT_TIME_LIMIT = 15 * 60
+    CELERY_TASK_TIME_LIMIT = CELERY_TASK_SOFT_TIME_LIMIT + 30
+    CELERY_TASK_SERIALIZER = json
+
 
 class DevelopmentConfig(BaseConfig):
     pass

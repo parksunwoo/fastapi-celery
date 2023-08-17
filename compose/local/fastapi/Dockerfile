@@ -36,6 +36,17 @@ COPY ./compose/local/fastapi/celery/flower/start /start-flower
 RUN sed -i 's/\r$//g' /start-flower
 RUN chmod +x /start-flower
 
+
+RUN mkdir /app
+RUN mkdir /app/upload
+RUN mkdir /app/flower_db
+
 WORKDIR /app
+
+COPY . .
+
+RUN chown -R fastapi:fastapi /app
+
+USER fastapi
 
 ENTRYPOINT ["/entrypoint"]
